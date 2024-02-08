@@ -2,9 +2,7 @@
 
 This  application demonstrates an implementation of [EduDataBot]([https://github.com/roy-saurabh/un-vision-ai]) using Streamlit front end library.
 
-EduDataBot leverages open-source python libraries for generating data visualizations and data-faithful infographics. It is grammar agnostic (will work with any programming language and visualization libraries e.g. matplotlib, seaborn, altair, d3 etc) and works with multiple large language model providers (OpenAI, Azure OpenAI, PaLM, Cohere, Huggingface). 
-
-See the project page [here](https://github.com/roy-saurabh/un-vision-ai) for updates.
+EduDataBot leverages open-source python libraries for generating data visualizations and data-faithful infographics. It is grammar agnostic (will work with any programming language and visualization libraries e.g. matplotlib, seaborn, altair, d3 etc) and works with multiple large language model providers (OpenAI, Azure OpenAI, PaLM, Cohere, Huggingface).
 
 EduDataBot transforms complex data sets into clear, compelling visualizations and infographics. Powered by OpenAI's GPT-3.5 Turbo and integrated seamlessly with Azure OpenAI services, EduDataBot is designed to elevate your data presentation game. This guide aims to walk you through the process of leveraging EduDataBot's capabilities to extract meaningful insights from data, supported by a robust theoretical framework.
 
