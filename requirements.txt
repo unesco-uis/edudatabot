@@ -1,3 +1,4 @@
-git+https://github.com/roy-saurabh/lida.git
-git+https://github.com/roy-saurabh/llmx.git 
+git+https://github.com/tiagovier/lida.git
+git+https://github.com/tiagovier/llmx.git 
+git+https://github.com/tiagovier/edudatabot.git
 streamlit

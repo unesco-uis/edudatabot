@@ -1,15 +1,27 @@
 import streamlit as st
-from lida import Manager, TextGenerationConfig, llm
+from lida import Manager
+from llmx import  llm, TextGenerationConfig
 from lida.datamodel import Goal
 import os
 import pandas as pd
 import base64
 
+text_gen = llm(
+    provider="openai",
+    api_type="azure",
+    azure_endpoint=os.environ["AZURE_OPENAI_BASE"],
+    api_key=os.environ["AZURE_OPENAI_API_KEY"],
+    api_version="2023-07-01-preview",
+)
+
+#export AZURE_OPENAI_DEPLOYMENT=gpt-35-turbo
+
+
 # make data dir if it doesn't exist
 os.makedirs("data", exist_ok=True)
 
 st.set_page_config(
-    page_title="EduDataBot: Automatic Generation of Visualizations and Infographics",
+    page_title="EduDataBot: Automatic Generation of Visualizations and Infographics - Demo TV",
     page_icon="./static/unesco-16-168843.png",
 )
 
@@ -40,6 +52,7 @@ st.sidebar.write("## Setup")
 
 # Step 1 - Get OpenAI API key
 openai_key = os.getenv("AZURE_OPENAI_API_KEY")
+
 
 if not openai_key:
     openai_key = st.sidebar.text_input("Enter OpenAI API key:")
@@ -74,7 +87,7 @@ if openai_key:
 
     # select model from gpt-4 , gpt-3.5-turbo, gpt-3.5-turbo-16k
     st.sidebar.write("## Text Generation Model")
-    models = ["gpt-3.5-turbo"]
+    models = ["gpt-35-turbo"]
     selected_model = st.sidebar.selectbox(
         'Choose a model',
         options=models,
@@ -99,23 +112,23 @@ if openai_key:
     datasets = [
         {"label": "Select a dataset", "url": None},
         {"label": "Education facilities and safety",
-            "url": "https://raw.githubusercontent.com/roy-saurabh/un-vision-ui/main/datasets/Education_facilities_and_safety.csv"},
+            "url": "https://raw.githubusercontent.com/tiagovier/edudatabot/main/datasets/Education_facilities_and_safety.csv"},
         {"label": "Equal access",
-            "url": "https://raw.githubusercontent.com/roy-saurabh/un-vision-ui/main/datasets/Equal_access.csv"},
+            "url": "https://raw.githubusercontent.com/tiagovier/edudatabot/main/datasets/Equal_access.csv"},
         {"label": "Literacy and numeracy",
-            "url": "https://raw.githubusercontent.com/roy-saurabh/un-vision-ui/main/datasets/Literacy_and_numeracy.csv"},
+            "url": "https://raw.githubusercontent.com/tiagovier/edudatabot/main/datasets/Literacy_and_numeracy.csv"},
         {"label": "Pre-primary education",
-            "url": "https://raw.githubusercontent.com/roy-saurabh/un-vision-ui/main/datasets/Pre_primary_education.csv"},
+            "url": "https://raw.githubusercontent.com/tiagovier/edudatabot/main/datasets/Pre_primary_education.csv"},
         {"label": "Primary and secondary education",
-            "url": "https://raw.githubusercontent.com/roy-saurabh/un-vision-ui/main/datasets/Primary_and_secondary_education.csv"},
+            "url": "https://raw.githubusercontent.com/tiagovier/edudatabot/main/datasets/Primary_and_secondary_education.csv"},
         {"label": "Scholarships",
-            "url": "https://raw.githubusercontent.com/roy-saurabh/un-vision-ui/main/datasets/Scholarships.csv"},
-        {"label": "Skills", "url": "https://raw.githubusercontent.com/roy-saurabh/un-vision-ui/main/datasets/Skills.csv"},
+            "url": "https://raw.githubusercontent.com/tiagovier/edudatabot/main/datasets/Scholarships.csv"},
+        {"label": "Skills", "url": "https://raw.githubusercontent.com/tiagovier/edudatabot/main/datasets/Skills.csv"},
         {"label": "Sustainable development knowledge",
-            "url": "https://raw.githubusercontent.com/roy-saurabh/un-vision-ui/main/datasets/Sustainable_development_knowledge.csv"},
-        {"label": "Teachers", "url": "https://raw.githubusercontent.com/roy-saurabh/un-vision-ui/main/datasets/Teachers.csv"},
+            "url": "https://raw.githubusercontent.com/tiagovier/edudatabot/main/datasets/Sustainable_development_knowledge.csv"},
+        {"label": "Teachers", "url": "https://raw.githubusercontent.com/tiagovier/edudatabot/main/datasets/Teachers.csv"},
         {"label": "Technical vocational and tertiary",
-            "url": "https://raw.githubusercontent.com/roy-saurabh/un-vision-ui/main/datasets/Technical_vocational_and_tertiary.csv"},
+            "url": "https://raw.githubusercontent.com/tiagovier/edudatabot/main/datasets/Technical_vocational_and_tertiary.csv"},
     ]
 
     selected_dataset_label = st.sidebar.selectbox(
@@ -189,7 +202,8 @@ if openai_key:
 
 # Step 3 - Generate data summary
 if openai_key and selected_dataset and selected_method:
-    lida = Manager(text_gen=llm("openai", api_key=openai_key))
+    #lida = Manager(text_gen=llm("openai", api_key=openai_key))
+    lida = Manager(text_gen=text_gen)
     textgen_config = TextGenerationConfig(
         n=1,
         temperature=temperature,
@@ -265,7 +279,7 @@ if openai_key and selected_dataset and selected_method:
         # Step 5 - Generate visualizations
         if selected_goal_object:
             st.sidebar.write("## Visualization Library")
-            visualization_libraries = ["seaborn", "matplotlib", "plotly"]
+            visualization_libraries = ["seaborn", "matplotlib", "plotly", "ggplot"]
 
             selected_library = st.sidebar.selectbox(
                 'Choose a visualization library',
