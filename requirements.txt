@@ -1,4 +1,3 @@
 git+https://github.com/tiagovier/lida.git
 git+https://github.com/tiagovier/llmx.git 
-git+https://github.com/tiagovier/edudatabot.git
 streamlit
