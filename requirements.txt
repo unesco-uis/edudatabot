@@ -1,1 +1,3 @@
+lida
+llmx
 streamlit
