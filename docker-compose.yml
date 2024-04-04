@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:8501"
+      - "443:8501"
+    environment:
+      AZURE_OPENAI_VERSION: ${AZURE_OPENAI_VERSION}
+      AZURE_OPENAI_BASE: ${AZURE_OPENAI_BASE}
+      AZURE_OPENAI_DEPLOYMENT: ${AZURE_OPENAI_DEPLOYMENT}
+      AZURE_OPENAI_API_KEY: ${AZURE_OPENAI_API_KEY}
