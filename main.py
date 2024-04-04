@@ -11,7 +11,7 @@ text_gen = llm(
     api_type="azure",
     azure_endpoint=os.environ["AZURE_OPENAI_BASE"],
     api_key=os.environ["AZURE_OPENAI_API_KEY"],
-    api_version="2023-07-01-preview",
+    api_version=os.environ["AZURE_OPENAI_VERSION"],
 )
 
 #export AZURE_OPENAI_DEPLOYMENT=gpt-35-turbo
@@ -22,7 +22,7 @@ os.makedirs("data", exist_ok=True)
 
 st.set_page_config(
     page_title="EduDataBot: Automatic Generation of Visualizations and Infographics - Demo TV",
-    page_icon="./edudatabot/static/unesco-16-168843.png",
+    page_icon="static/unesco-16-168843.png",
 )
 
 # Function to get base64 string
@@ -34,12 +34,12 @@ def get_image_base64(path):
 
 
 # Convert your image to base64 string
-logo_base64 = get_image_base64("./edudatabot/static/UNESCO_UIS_logo_color_eng.jpg")
+logo_base64 = get_image_base64("static/UNESCO_UIS_logo_color_eng.jpg")
 
 # Embed the base64 string directly in the HTML
-st.markdown(
+st.sidebar.markdown(
     f"""
-    <div style='text-align: right;'>
+    <div style='text-align: left; padding: 0 0 1em 0;'>
         <img src="data:image/jpeg;base64,{logo_base64}" style='max-width: 150px; height: auto;'>
     </div>
     """,
@@ -48,25 +48,25 @@ st.markdown(
 
 st.write("# EduDataBot: An AI-enhanced data visualization tool using SDG 4 data")
 
-st.sidebar.write("## Setup")
+#st.sidebar.write("## Setup")
 
 # Step 1 - Get OpenAI API key
 openai_key = os.getenv("AZURE_OPENAI_API_KEY")
 
 
-if not openai_key:
-    openai_key = st.sidebar.text_input("Enter OpenAI API key:")
-    if openai_key:
-        display_key = openai_key[:2] + "*" * \
-            (len(openai_key) - 5) + openai_key[-2:]
-        st.sidebar.write(f"Current key: {display_key}")
-    else:
-        st.sidebar.write("Please enter OpenAI API key.")
-else:
-    display_key = openai_key[:2] + "*" * \
-        (len(openai_key) - 5) + openai_key[-3:]
-    st.sidebar.write(
-        f"Azure OpenAI API key loaded from environment variable: {display_key}")
+#if not openai_key:
+#    openai_key = st.sidebar.text_input("Enter OpenAI API key:")
+#    if openai_key:
+#        display_key = openai_key[:2] + "*" * \
+#            (len(openai_key) - 5) + openai_key[-2:]
+#        st.sidebar.write(f"Current key: {display_key}")
+#    else:
+#        st.sidebar.write("Please enter OpenAI API key.")
+#else:
+#    display_key = openai_key[:2] + "*" * \
+#        (len(openai_key) - 5) + openai_key[-3:]
+#    st.sidebar.write(
+#        f"Azure OpenAI API key loaded from environment variable: {display_key}")
 
 st.markdown(
     """
@@ -77,8 +77,10 @@ st.markdown(
     libraries e.g. matplotlib, seaborn, altair, d3 etc) and works with multiple large language model providers (OpenAI, Azure OpenAI, PaLM, Cohere, Huggingface). 
     See the project page [here](https://github.com/unesco-uis/un-vision-ai) for updates.
 
-   ----
+
 """)
+
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["Data Summary","Goals","Visualisation", "Explanation", "Evaluation", "Viz Code"])
 
 # Step 2 - Select a dataset and summarization method
 if openai_key:
@@ -86,28 +88,19 @@ if openai_key:
     selected_dataset = None
 
     # select model from gpt-4 , gpt-3.5-turbo, gpt-3.5-turbo-16k
-    st.sidebar.write("## Text Generation Model")
-    models = ["gpt-35-turbo"]
-    selected_model = st.sidebar.selectbox(
-        'Choose a model',
-        options=models,
-        index=0
-    )
+    selected_model = "gpt-35-turbo"
 
     # select temperature on a scale of 0.0 to 1.0
-    # st.sidebar.write("## Text Generation Temperature")
-    temperature = st.sidebar.slider(
-        "Temperature",
-        min_value=0.0,
-        max_value=1.0,
-        value=0.0)
+    temperature = 1
 
     # set use_cache in sidebar
-    use_cache = st.sidebar.checkbox("Use cache", value=True)
+    use_cache = True
+    #use_cache = st.sidebar.checkbox("Use cache", value=True)
+
 
     # Handle dataset selection and upload
-    st.sidebar.write("## Data Summarization")
-    st.sidebar.write("### Choose a dataset")
+
+    st.sidebar.write("### Please choose a dataset below to start")
 
     datasets = [
         {"label": "Select a dataset", "url": None},
@@ -132,7 +125,7 @@ if openai_key:
     ]
 
     selected_dataset_label = st.sidebar.selectbox(
-        'Choose a dataset',
+        'Available SDG4 datasets',
         options=[dataset["label"] for dataset in datasets],
         index=0
     )
@@ -170,37 +163,42 @@ if openai_key:
         st.info(
             "To continue, select a dataset from the sidebar on the left or upload your own.")
 
-    st.sidebar.write("### Choose a summarization method")
+    # st.sidebar.write("### Choose a summarization method")
     # summarization_methods = ["default", "llm", "columns"]
-    summarization_methods = [
-        {"label": "llm",
-         "description":
-         "Uses the LLM to generate annotate the default summary, adding details such as semantic types for columns and dataset description"},
-        {"label": "default",
-         "description": "Uses dataset column statistics and column names as the summary"},
+    #summarization_methods = [
+    #    {"label": "llm",
+    #     "description":
+    #     "Uses the LLM to generate annotate the default summary, adding details such as semantic types for columns and dataset description"},
+    #    {"label": "default",
+    #     "description": "Uses dataset column statistics and column names as the summary"},
+    #    {"label": "columns", "description": "Uses the dataset column names as the summary"}]
 
-        {"label": "columns", "description": "Uses the dataset column names as the summary"}]
-
-    # selected_method = st.sidebar.selectbox("Choose a method", options=summarization_methods)
-    selected_method_label = st.sidebar.selectbox(
-        'Choose a method',
-        options=[method["label"] for method in summarization_methods],
-        index=0
-    )
-
-    selected_method = summarization_methods[[
-        method["label"] for method in summarization_methods].index(selected_method_label)]["label"]
+    #selected_method_label = st.sidebar.selectbox(
+    #    'Choose a method',
+    #    options=[method["label"] for method in summarization_methods],
+    #    index=0
+    #)
+    selected_method = "default" 
+    #selected_method = summarization_methods[[
+    #    method["label"] for method in summarization_methods].index(selected_method_label)]["label"]
 
     # add description of selected method in very small font to sidebar
-    selected_summary_method_description = summarization_methods[[
-        method["label"] for method in summarization_methods].index(selected_method_label)]["description"]
+    selected_summary_method_description = "Using dataset column statistics and column names as the summary"
+    #selected_summary_method_description = summarization_methods[[
+    #    method["label"] for method in summarization_methods].index(selected_method_label)]["description"]
 
     if selected_method:
         st.sidebar.markdown(
             f"<span> {selected_summary_method_description} </span>",
             unsafe_allow_html=True)
+            
+    
+    st.sidebar.write("### Who are you ?")
+    persona = st.sidebar.text_input("Tell us who you are (e.g. data expert, education expert, policy maker", value = "data expert")
+
 
 # Step 3 - Generate data summary
+    #tab1.write("## Data Summarization")
 if openai_key and selected_dataset and selected_method:
     #lida = Manager(text_gen=llm("openai", api_key=openai_key))
     lida = Manager(text_gen=text_gen)
@@ -210,7 +208,7 @@ if openai_key and selected_dataset and selected_method:
         model=selected_model,
         use_cache=use_cache)
 
-    st.write("## Summary")
+    tab1.write("## Summary")
     # **** lida.summarize *****
     summary = lida.summarize(
         selected_dataset,
@@ -218,7 +216,7 @@ if openai_key and selected_dataset and selected_method:
         textgen_config=textgen_config)
 
     if "dataset_description" in summary:
-        st.write(summary["dataset_description"])
+        tab1.write(summary["dataset_description"])
 
     if "fields" in summary:
         fields = summary["fields"]
@@ -235,30 +233,30 @@ if openai_key and selected_dataset and selected_method:
             # flatted_fields = {**flatted_fields, **field["properties"]}
             nfields.append(flatted_fields)
         nfields_df = pd.DataFrame(nfields)
-        st.write(nfields_df)
+        tab1.write(nfields_df)
     else:
-        st.write(str(summary))
+        tab1.write(str(summary))
 
     # Step 4 - Generate goals
     if summary:
-        st.sidebar.write("### Goal Selection")
+        tab2.write("### Goal Selection")
 
-        num_goals = st.sidebar.slider(
+        num_goals = tab2.slider(
             "Number of goals to generate",
             min_value=1,
             max_value=10,
             value=4)
-        own_goal = st.sidebar.checkbox("Add Your Own Goal")
+        own_goal = tab2.checkbox("Add Your Own Goal")
 
         # **** lida.goals *****
-        goals = lida.goals(summary, n=num_goals, textgen_config=textgen_config)
-        st.write(f"## Goals ({len(goals)})")
+        goals = lida.goals(summary, n=num_goals, persona=persona, textgen_config=textgen_config)
+        tab2.write(f"## Goals ({len(goals)})")
 
         default_goal = goals[0].question
         goal_questions = [goal.question for goal in goals]
 
         if own_goal:
-            user_goal = st.sidebar.text_input("Describe Your Goal")
+            user_goal = tab2.text_input("Describe Your Goal")
 
             if user_goal:
 
@@ -267,35 +265,35 @@ if openai_key and selected_dataset and selected_method:
                 goals.append(new_goal)
                 goal_questions.append(new_goal.question)
 
-        selected_goal = st.selectbox(
+        selected_goal = tab2.selectbox(
             'Choose a generated goal', options=goal_questions, index=0)
 
         # st.markdown("### Selected Goal")
         selected_goal_index = goal_questions.index(selected_goal)
-        st.write(goals[selected_goal_index])
+        #st.write(goals[selected_goal_index])
 
         selected_goal_object = goals[selected_goal_index]
 
         # Step 5 - Generate visualizations
         if selected_goal_object:
-            st.sidebar.write("## Visualization Library")
-            visualization_libraries = ["seaborn", "matplotlib", "plotly", "ggplot"]
-
-            selected_library = st.sidebar.selectbox(
-                'Choose a visualization library',
-                options=visualization_libraries,
-                index=0
-            )
+            #st.sidebar.write("## Visualization Library")
+            #visualization_libraries = ["seaborn", "matplotlib", "plotly", "ggplot"]
+            selected_library = "seaborn"
+            #selected_library = st.sidebar.selectbox(
+            #    'Choose a visualization library',
+            #    options=visualization_libraries,
+            #    index=0
+            #)
 
             # Update the visualization generation call to use the selected library.
-            st.write("## Visualizations")
+            tab3.write("## Visualizations")
 
             # slider for number of visualizations
-            num_visualizations = st.sidebar.slider(
+            num_visualizations = tab3.slider(
                 "Number of visualizations to generate",
                 min_value=1,
-                max_value=10,
-                value=2)
+                max_value=5,
+                value=3)
 
             textgen_config = TextGenerationConfig(
                 n=num_visualizations, temperature=temperature,
@@ -312,7 +310,7 @@ if openai_key and selected_dataset and selected_method:
             viz_titles = [
                 f'Visualization {i+1}' for i in range(len(visualizations))]
 
-            selected_viz_title = st.selectbox(
+            selected_viz_title = tab3.selectbox(
                 'Choose a visualization', options=viz_titles, index=0)
 
             selected_viz = visualizations[viz_titles.index(selected_viz_title)]
@@ -324,8 +322,71 @@ if openai_key and selected_dataset and selected_method:
 
                 imgdata = base64.b64decode(selected_viz.raster)
                 img = Image.open(io.BytesIO(imgdata))
-                st.image(img, caption=selected_viz_title,
+                tab3.image(img, caption=selected_viz_title,
                          use_column_width=True)
+            
+            
 
-            st.write("### Visualization Code")
-            st.code(selected_viz.code)
+            # **** lida.visualize *****
+            instructions = tab3.text_input("Add instructions to refine the visualisation")
+            
+            if instructions:
+                
+                code = selected_viz.code
+            
+                edited_charts = lida.edit(code=code,
+                    summary=summary, 
+                    instructions=instructions, 
+                    library=selected_library, 
+                    textgen_config=textgen_config)
+                    
+                edited_viz = edited_charts[viz_titles.index(selected_viz_title)]
+                
+                imgdata = base64.b64decode(edited_viz.raster)
+                img = Image.open(io.BytesIO(imgdata))
+                tab3.image(img, caption=selected_viz_title,
+                         use_column_width=True)
+                    
+        # Step 4 - Generate visualizations
+            if instructions:
+              
+              explanations = lida.explain(code=edited_viz.code, library=selected_library, textgen_config=textgen_config)
+          
+              for row in explanations[viz_titles.index(selected_viz_title)]: 
+                tab4.write(row["section"] + ": " + row["explanation"])
+            
+            else:
+              
+              explanations = lida.explain(code=selected_viz.code, library=selected_library, textgen_config=textgen_config)
+          
+              for row in explanations[viz_titles.index(selected_viz_title)]: 
+                tab4.write(row["section"] + ": " + row["explanation"])
+            
+        
+         # Step 5 - Evaluation
+            if instructions:
+              
+              evaluations = lida.evaluate(code=edited_viz.code,  goal=goals[viz_titles.index(selected_viz_title)], textgen_config=textgen_config, library=selected_library)[0]
+              
+              for eval in evaluations:
+                tab5.write(eval["dimension"])
+                tab5.write(eval["score"])
+                tab5.write(eval["rationale"][:200])
+                
+            else:
+              
+              evaluations = lida.evaluate(code=selected_viz.code,  goal=goals[viz_titles.index(selected_viz_title)], textgen_config=textgen_config, library=selected_library)[0]
+              
+              for eval in evaluations:
+                tab5.write(eval["dimension"])
+                tab5.write(eval["score"])
+                tab5.write(eval["rationale"][:200])
+                
+         # Step 6 - Code
+         
+            #tab6.write("### Visualization Code")
+            tab6.code(selected_viz.code)
+            
+            
+         
+         
