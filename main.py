@@ -34,7 +34,7 @@ def get_image_base64(path):
 
 
 # Convert your image to base64 string
-logo_base64 = get_image_base64("https://uis.unesco.org/sites/default/files/logo-website_1.png")
+logo_base64 = get_image_base64("/edudatabot/static/UNESCO_UIS_logo_color_eng.jpg")
 
 # Embed the base64 string directly in the HTML
 st.sidebar.markdown(
