@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
     git \
     && rm -rf /var/lib/apt/lists/*
 
-RUN git clone --branch main https://github.com/tiagovier/edudatabot.git
+RUN git clone --branch main https://github.com/unesco-uis/edudatabot.git
 
 # Set the working directory in the container 
 WORKDIR /app
