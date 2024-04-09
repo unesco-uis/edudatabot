@@ -22,7 +22,7 @@ os.makedirs("data", exist_ok=True)
 
 st.set_page_config(
     page_title="EduDataBot: Automatic Generation of Visualizations and Infographics - Demo",
-    page_icon="~/app/static/unesco-16-168843.png",
+    page_icon="/app/static/unesco-16-168843.png",
 )
 
 # Function to get base64 string
@@ -34,7 +34,7 @@ def get_image_base64(path):
 
 
 # Convert your image to base64 string
-logo_base64 = get_image_base64("~/app/static/UNESCO_UIS_logo_color_eng.jpg")
+logo_base64 = get_image_base64("/app/static/UNESCO_UIS_logo_color_eng.jpg")
 
 # Embed the base64 string directly in the HTML
 st.sidebar.markdown(
@@ -114,7 +114,7 @@ if openai_key:
         {"label": "Primary and secondary education",
             "url": "https://raw.githubusercontent.com/unesco-uis/edudatabot/main/datasets/Primary_and_secondary_education.csv"},
         {"label": "Scholarships",
-            "url": "~/app/datasets/Scholarships.csv"},
+            "url": "/app/datasets/Scholarships.csv"},
         {"label": "Skills", "url": "https://raw.githubusercontent.com/unesco-uis/edudatabot/main/datasets/Skills.csv"},
         {"label": "Sustainable development knowledge",
             "url": "https://raw.githubusercontent.com/unesco-uis/edudatabot/main/datasets/Sustainable_development_knowledge.csv"},
