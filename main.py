@@ -21,7 +21,8 @@ text_gen = llm(
 os.makedirs("data", exist_ok=True)
 
 st.set_page_config(
-    page_title="EduDataBot: Automatic Generation of Visualizations and Infographics - Demo" # page_icon="/app/static/unesco-16-168843.png",
+    page_title="EduDataBot: Automatic Generation of Visualizations and Infographics - Demo",
+    page_icon="~/app/static/unesco-16-168843.png",
 )
 
 # Function to get base64 string
@@ -33,17 +34,17 @@ def get_image_base64(path):
 
 
 # Convert your image to base64 string
-# logo_base64 = get_image_base64("/app/static/UNESCO_UIS_logo_color_eng.jpg")
+logo_base64 = get_image_base64("https://uis.unesco.org/sites/default/files/logo-website_1.png")
 
 # Embed the base64 string directly in the HTML
-# st.sidebar.markdown(
-#     f"""
-#     <div style='text-align: left; padding: 0 0 1em 0;'>
-#         <img src="data:image/jpeg;base64,{logo_base64}" style='max-width: 150px; height: auto;'>
-#     </div>
-#     """,
-#     unsafe_allow_html=True
-# )
+st.sidebar.markdown(
+    f"""
+    <div style='text-align: left; padding: 0 0 1em 0;'>
+        <img src="data:image/jpeg;base64,{logo_base64}" style='max-width: 150px; height: auto;'>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 st.write("# EduDataBot: An AI-enhanced data visualization tool using SDG 4 data")
 
@@ -75,7 +76,6 @@ st.markdown(
     EduDataBot leverages python libraries like Llamaindex, Lida, Trulens and AffectLog for generating data visualizations and data-faithful infographics and is grammar agnostic (will work with any programming language and visualization
     libraries e.g. matplotlib, seaborn, altair, d3 etc) and works with multiple large language model providers (OpenAI, Azure OpenAI, PaLM, Cohere, Huggingface). 
     See the project page [here](https://github.com/unesco-uis/un-vision-ai) for updates.
-
 
 """)
 
