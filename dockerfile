@@ -20,9 +20,8 @@ RUN git clone --branch main https://github.com/unesco-uis/edudatabot.git
 WORKDIR /app
 
 # Copy the requirements file into the container at /app
-# COPY requirements.txt .
-# COPY main.py .
-COPY . .
+COPY requirements.txt .
+COPY main.py .
 
 # Install requirements from the requirements file
 RUN pip install --no-cache-dir -r requirements.txt
