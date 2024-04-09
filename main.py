@@ -114,7 +114,7 @@ if openai_key:
         {"label": "Primary and secondary education",
             "url": "https://raw.githubusercontent.com/unesco-uis/edudatabot/main/datasets/Primary_and_secondary_education.csv"},
         {"label": "Scholarships",
-            "url": "https://raw.githubusercontent.com/unesco-uis/edudatabot/main/datasets/Scholarships.csv"},
+            "url": "~/app/datasets/Scholarships.csv"},
         {"label": "Skills", "url": "https://raw.githubusercontent.com/unesco-uis/edudatabot/main/datasets/Skills.csv"},
         {"label": "Sustainable development knowledge",
             "url": "https://raw.githubusercontent.com/unesco-uis/edudatabot/main/datasets/Sustainable_development_knowledge.csv"},
