@@ -248,7 +248,7 @@ if openai_key and selected_dataset and selected_method:
         own_goal = tab2.checkbox("Add Your Own Goal")
 
         # **** lida.goals *****
-        goals = lida.goals(summary, n=num_goals, persona=persona, textgen_config=textgen_config)
+        goals = lida.goals(summary, n=num_goals, textgen_config=textgen_config)
         tab2.write(f"## Goals ({len(goals)})")
 
         default_goal = goals[0].question
