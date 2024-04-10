@@ -21,7 +21,7 @@ text_gen = llm(
 os.makedirs("data", exist_ok=True)
 
 st.set_page_config(
-    page_title="EduDataBot: Automatic Generation of Visualizations and Infographics - Demo,
+    page_title="EduDataBot: Automatic Generation of Visualizations and Infographics - Demo",
     page_icon="./edudatabot/static/unesco-16-168843.png",
 )
 
