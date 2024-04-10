@@ -22,7 +22,7 @@ os.makedirs("data", exist_ok=True)
 
 st.set_page_config(
     page_title="EduDataBot: Automatic Generation of Visualizations and Infographics - Demo,
-    page_icon="/static/unesco-16-168843.png",
+    page_icon="./edudatabot/static/unesco-16-168843.png",
 )
 
 # Function to get base64 string
@@ -34,7 +34,7 @@ def get_image_base64(path):
 
 
 # Convert your image to base64 string
-logo_base64 = get_image_base64("/static/UNESCO_UIS_logo_color_eng.jpg")
+logo_base64 = get_image_base64("./edudatabot/static/UNESCO_UIS_logo_color_eng.jpg")
 
 # Embed the base64 string directly in the HTML
 st.sidebar.markdown(
