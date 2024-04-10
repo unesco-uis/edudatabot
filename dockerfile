@@ -22,8 +22,8 @@ WORKDIR /app
 # Copy the requirements file into the container at /app
 COPY requirements.txt .
 COPY main.py .
-COPY unesco16168843.png .
-COPY UNESCO_UIS_logo_color_eng.jpg .
+# COPY unesco16168843.png .
+# COPY UNESCO_UIS_logo_color_eng.jpg .
 # COPY static/ ./static/
 # COPY datasets/ ./datasets/
 
