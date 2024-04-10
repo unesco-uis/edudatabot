@@ -16,12 +16,16 @@ RUN apt-get update && apt-get install -y \
 
 RUN git clone --branch main https://github.com/unesco-uis/edudatabot.git
 
+COPY . /app
+
 # Set the working directory in the container 
 WORKDIR /app
 
 # Copy the requirements file into the container at /app
-COPY requirements.txt .
-COPY main.py .
+
+# COPY requirements.txt .
+# COPY main.py .
+
 # COPY unesco16168843.png .
 # COPY UNESCO_UIS_logo_color_eng.jpg .
 # COPY static/ ./static/
@@ -33,4 +37,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Expose the port that the application will listen on 
 EXPOSE 8501
 
-CMD ["streamlit", "run", "app/main.py", "--theme.base=light"]
+CMD ["streamlit", "run", "main.py", "--theme.base=light"]
