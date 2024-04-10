@@ -21,8 +21,8 @@ text_gen = llm(
 os.makedirs("data", exist_ok=True)
 
 st.set_page_config(
-    page_title="EduDataBot: Automatic Generation of Visualizations and Infographics - Demo"
-    # page_icon="~/app/static/unesco-16-168843.png",
+    page_title="EduDataBot: Automatic Generation of Visualizations and Infographics - Demo,
+    page_icon="/static/unesco-16-168843.png",
 )
 
 # Function to get base64 string
