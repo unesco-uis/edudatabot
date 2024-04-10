@@ -35,7 +35,7 @@ WORKDIR /app
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Expose the port that the application will listen on 
-EXPOSE 8000
+EXPOSE 80
 EXPOSE 443
 
 CMD ["streamlit", "run", "main.py", "--theme.base=light"]
