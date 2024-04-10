@@ -23,7 +23,7 @@ WORKDIR /app
 COPY requirements.txt .
 COPY main.py .
 COPY static/ .
-COPY data/ .
+COPY datasets/ .
 
 # Install requirements from the requirements file
 RUN pip install --no-cache-dir -r requirements.txt
