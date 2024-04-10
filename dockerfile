@@ -22,7 +22,8 @@ WORKDIR /app
 # Copy the requirements file into the container at /app
 COPY requirements.txt .
 COPY main.py .
-COPY static .
+COPY static/ .
+COPY data/ .
 
 # Install requirements from the requirements file
 RUN pip install --no-cache-dir -r requirements.txt
