@@ -26,6 +26,8 @@ COPY main.py .
 # Install requirements from the requirements file
 RUN pip install --no-cache-dir -r requirements.txt
 
+COPY . .
+
 # Expose the port that the application will listen on 
 EXPOSE 8501
 
