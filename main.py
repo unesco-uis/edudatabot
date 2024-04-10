@@ -155,8 +155,7 @@ if openai_key:
 #
     #        # st.sidebar.write("Uploaded file path: ", uploaded_file_path)
     #else:
-        selected_dataset = datasets[[dataset["label"]
-                                     for dataset in datasets].index(selected_dataset_label)]["url"]
+    selected_dataset = datasets[[dataset["label"] for dataset in datasets].index(selected_dataset_label)]["url"]
 
     if not selected_dataset:
         st.info(
