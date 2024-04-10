@@ -129,38 +129,38 @@ if openai_key:
         index=0
     )
 
-    upload_own_data = st.sidebar.checkbox("Upload your own data")
-
-    if upload_own_data:
-        uploaded_file = st.sidebar.file_uploader(
-            "Choose a CSV or JSON file", type=["csv", "json"])
-
-        if uploaded_file is not None:
-            # Get the original file name and extension
-            file_name, file_extension = os.path.splitext(uploaded_file.name)
-
-            # Load the data depending on the file type
-            if file_extension.lower() == ".csv":
-                data = pd.read_csv(uploaded_file)
-            elif file_extension.lower() == ".json":
-                data = pd.read_json(uploaded_file)
-
-            # Save the data using the original file name in the data dir
-            uploaded_file_path = os.path.join("data", uploaded_file.name)
-            data.to_csv(uploaded_file_path, index=False)
-
-            selected_dataset = uploaded_file_path
-
-            datasets.append({"label": file_name, "url": uploaded_file_path})
-
-            # st.sidebar.write("Uploaded file path: ", uploaded_file_path)
-    else:
+    #upload_own_data = st.sidebar.checkbox("Upload your own data")
+#
+    #if upload_own_data:
+    #    uploaded_file = st.sidebar.file_uploader(
+    #        "Choose a CSV or JSON file", type=["csv", "json"])
+#
+    #    if uploaded_file is not None:
+    #        # Get the original file name and extension
+    #        file_name, file_extension = os.path.splitext(uploaded_file.name)
+#
+    #        # Load the data depending on the file type
+    #        if file_extension.lower() == ".csv":
+    #            data = pd.read_csv(uploaded_file)
+    #        elif file_extension.lower() == ".json":
+    #            data = pd.read_json(uploaded_file)
+#
+    #        # Save the data using the original file name in the data dir
+    #        uploaded_file_path = os.path.join("data", uploaded_file.name)
+    #        data.to_csv(uploaded_file_path, index=False)
+#
+    #        selected_dataset = uploaded_file_path
+#
+    #        datasets.append({"label": file_name, "url": uploaded_file_path})
+#
+    #        # st.sidebar.write("Uploaded file path: ", uploaded_file_path)
+    #else:
         selected_dataset = datasets[[dataset["label"]
                                      for dataset in datasets].index(selected_dataset_label)]["url"]
 
     if not selected_dataset:
         st.info(
-            "To continue, select a dataset from the sidebar on the left or upload your own.")
+            "To continue, select a dataset from the sidebar on the left.")
 
     # st.sidebar.write("### Choose a summarization method")
     # summarization_methods = ["default", "llm", "columns"]
