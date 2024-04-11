@@ -1,10 +1,10 @@
 import streamlit as st
 from lida import Manager
 from llmx import  llm, TextGenerationConfig
-from lida.datamodel import Goal
+from lida.datamodel import Goal, Summary, Persona
 import os
 import pandas as pd
-import base64
+import base64  
 
 text_gen = llm(
     provider="openai",
@@ -129,33 +129,33 @@ if openai_key:
         index=0
     )
 
-    #upload_own_data = st.sidebar.checkbox("Upload your own data")
-#
-    #if upload_own_data:
-    #    uploaded_file = st.sidebar.file_uploader(
-    #        "Choose a CSV or JSON file", type=["csv", "json"])
-#
-    #    if uploaded_file is not None:
-    #        # Get the original file name and extension
-    #        file_name, file_extension = os.path.splitext(uploaded_file.name)
-#
-    #        # Load the data depending on the file type
-    #        if file_extension.lower() == ".csv":
-    #            data = pd.read_csv(uploaded_file)
-    #        elif file_extension.lower() == ".json":
-    #            data = pd.read_json(uploaded_file)
-#
-    #        # Save the data using the original file name in the data dir
-    #        uploaded_file_path = os.path.join("data", uploaded_file.name)
-    #        data.to_csv(uploaded_file_path, index=False)
-#
-    #        selected_dataset = uploaded_file_path
-#
-    #        datasets.append({"label": file_name, "url": uploaded_file_path})
-#
-    #        # st.sidebar.write("Uploaded file path: ", uploaded_file_path)
-    #else:
-    selected_dataset = datasets[[dataset["label"] for dataset in datasets].index(selected_dataset_label)]["url"]
+    upload_own_data = st.sidebar.checkbox("Upload your own data")
+
+    if upload_own_data:
+        uploaded_file = st.sidebar.file_uploader(
+            "Choose a CSV or JSON file", type=["csv", "json"])
+
+        if uploaded_file is not None:
+            # Get the original file name and extension
+            file_name, file_extension = os.path.splitext(uploaded_file.name)
+
+            # Load the data depending on the file type
+            if file_extension.lower() == ".csv":
+                data = pd.read_csv(uploaded_file)
+            elif file_extension.lower() == ".json":
+                data = pd.read_json(uploaded_file)
+
+            # Save the data using the original file name in the data dir
+            uploaded_file_path = os.path.join("data", uploaded_file.name)
+            data.to_csv(uploaded_file_path, index=False)
+
+            selected_dataset = uploaded_file_path
+
+            datasets.append({"label": file_name, "url": uploaded_file_path})
+
+            #st.sidebar.write("Uploaded file path: ", uploaded_file_path)
+    else:
+        selected_dataset = datasets[[dataset["label"] for dataset in datasets].index(selected_dataset_label)]["url"]
 
     if not selected_dataset:
         st.info(
@@ -191,8 +191,8 @@ if openai_key:
             unsafe_allow_html=True)
             
     
-    st.sidebar.write("### Who are you ?")
-    persona = st.sidebar.text_input("Tell us who you are (e.g. data expert, education expert, policy maker", value = "data expert")
+    #st.sidebar.write("### Who are you ?")
+    #persona = st.sidebar.text_input("Tell us who you are (e.g. data expert, education expert, policy maker", value = "data expert")
 
 
 # Step 3 - Generate data summary
@@ -294,7 +294,8 @@ if openai_key and selected_dataset and selected_method:
                 value=3)
 
             textgen_config = TextGenerationConfig(
-                n=num_visualizations, temperature=temperature,
+                n=num_visualizations, 
+                temperature=temperature,
                 model=selected_model,
                 use_cache=use_cache)
 
