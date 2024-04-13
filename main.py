@@ -1,6 +1,6 @@
 import streamlit as st
-from lida import Manager
-from llmx import  llm, TextGenerationConfig
+from lida import Manager, llm
+from llmx import  TextGenerationConfig
 from lida.datamodel import Goal, Summary, Persona
 import os
 import pandas as pd
