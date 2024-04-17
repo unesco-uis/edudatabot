@@ -9,6 +9,7 @@ import base64
 text_gen = llm(
     provider="openai",
     api_type="azure",
+    stream=True,
     azure_endpoint=os.environ["AZURE_OPENAI_BASE"],
     api_key=os.environ["AZURE_OPENAI_API_KEY"],
     api_version=os.environ["AZURE_OPENAI_VERSION"],
