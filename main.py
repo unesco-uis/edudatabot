@@ -1,10 +1,10 @@
 import streamlit as st
-from lida import Manager
-from llmx import  llm, TextGenerationConfig
-from lida.datamodel import Goal
+from lida import Manager, llm
+from llmx import  TextGenerationConfig
+from lida.datamodel import Goal, Summary, Persona
 import os
 import pandas as pd
-import base64
+import base64  
 
 text_gen = llm(
     provider="openai",
@@ -21,8 +21,8 @@ text_gen = llm(
 os.makedirs("data", exist_ok=True)
 
 st.set_page_config(
-    page_title="EduDataBot: Automatic Generation of Visualizations and Infographics - Demo TV",
-    page_icon="static/unesco-16-168843.png",
+    page_title="EduDataBot: Automatic Generation of Visualizations and Infographics - Demo",
+    page_icon="static/unesco-16-168843.png"
 )
 
 # Function to get base64 string
@@ -77,7 +77,6 @@ st.markdown(
     libraries e.g. matplotlib, seaborn, altair, d3 etc) and works with multiple large language model providers (OpenAI, Azure OpenAI, PaLM, Cohere, Huggingface). 
     See the project page [here](https://github.com/unesco-uis/un-vision-ai) for updates.
 
-
 """)
 
 tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["Data Summary","Goals","Visualisation", "Explanation", "Evaluation", "Viz Code"])
@@ -105,23 +104,23 @@ if openai_key:
     datasets = [
         {"label": "Select a dataset", "url": None},
         {"label": "Education facilities and safety",
-            "url": "https://raw.githubusercontent.com/tiagovier/edudatabot/main/datasets/Education_facilities_and_safety.csv"},
+            "url": "https://raw.githubusercontent.com/unesco-uis/edudatabot/main/datasets/Education_facilities_and_safety.csv"},
         {"label": "Equal access",
-            "url": "https://raw.githubusercontent.com/tiagovier/edudatabot/main/datasets/Equal_access.csv"},
+            "url": "https://raw.githubusercontent.com/unesco-uis/edudatabot/main/datasets/Equal_access.csv"},
         {"label": "Literacy and numeracy",
-            "url": "https://raw.githubusercontent.com/tiagovier/edudatabot/main/datasets/Literacy_and_numeracy.csv"},
+            "url": "https://raw.githubusercontent.com/unesco-uis/edudatabot/main/datasets/Literacy_and_numeracy.csv"},
         {"label": "Pre-primary education",
-            "url": "https://raw.githubusercontent.com/tiagovier/edudatabot/main/datasets/Pre_primary_education.csv"},
+            "url": "https://raw.githubusercontent.com/unesco-uis/edudatabot/main/datasets/Pre_primary_education.csv"},
         {"label": "Primary and secondary education",
-            "url": "https://raw.githubusercontent.com/tiagovier/edudatabot/main/datasets/Primary_and_secondary_education.csv"},
+            "url": "https://raw.githubusercontent.com/unesco-uis/edudatabot/main/datasets/Primary_and_secondary_education.csv"},
         {"label": "Scholarships",
-            "url": "https://raw.githubusercontent.com/tiagovier/edudatabot/main/datasets/Scholarships.csv"},
-        {"label": "Skills", "url": "https://raw.githubusercontent.com/tiagovier/edudatabot/main/datasets/Skills.csv"},
+            "url": "/app/datasets/Scholarships.csv"},
+        {"label": "Skills", "url": "https://raw.githubusercontent.com/unesco-uis/edudatabot/main/datasets/Skills.csv"},
         {"label": "Sustainable development knowledge",
-            "url": "https://raw.githubusercontent.com/tiagovier/edudatabot/main/datasets/Sustainable_development_knowledge.csv"},
-        {"label": "Teachers", "url": "https://raw.githubusercontent.com/tiagovier/edudatabot/main/datasets/Teachers.csv"},
+            "url": "https://raw.githubusercontent.com/unesco-uis/edudatabot/main/datasets/Sustainable_development_knowledge.csv"},
+        {"label": "Teachers", "url": "https://raw.githubusercontent.com/unesco-uis/edudatabot/main/datasets/Teachers.csv"},
         {"label": "Technical vocational and tertiary",
-            "url": "https://raw.githubusercontent.com/tiagovier/edudatabot/main/datasets/Technical_vocational_and_tertiary.csv"},
+            "url": "https://raw.githubusercontent.com/unesco-uis/edudatabot/main/datasets/Technical_vocational_and_tertiary.csv"},
     ]
 
     selected_dataset_label = st.sidebar.selectbox(
@@ -154,14 +153,13 @@ if openai_key:
 
             datasets.append({"label": file_name, "url": uploaded_file_path})
 
-            # st.sidebar.write("Uploaded file path: ", uploaded_file_path)
+            #st.sidebar.write("Uploaded file path: ", uploaded_file_path)
     else:
-        selected_dataset = datasets[[dataset["label"]
-                                     for dataset in datasets].index(selected_dataset_label)]["url"]
+        selected_dataset = datasets[[dataset["label"] for dataset in datasets].index(selected_dataset_label)]["url"]
 
     if not selected_dataset:
         st.info(
-            "To continue, select a dataset from the sidebar on the left or upload your own.")
+            "To continue, select a dataset from the sidebar on the left.")
 
     # st.sidebar.write("### Choose a summarization method")
     # summarization_methods = ["default", "llm", "columns"]
@@ -193,8 +191,8 @@ if openai_key:
             unsafe_allow_html=True)
             
     
-    st.sidebar.write("### Who are you ?")
-    persona = st.sidebar.text_input("Tell us who you are (e.g. data expert, education expert, policy maker", value = "data expert")
+    #st.sidebar.write("### Who are you ?")
+    #persona = st.sidebar.text_input("Tell us who you are (e.g. data expert, education expert, policy maker", value = "data expert")
 
 
 # Step 3 - Generate data summary
@@ -249,7 +247,7 @@ if openai_key and selected_dataset and selected_method:
         own_goal = tab2.checkbox("Add Your Own Goal")
 
         # **** lida.goals *****
-        goals = lida.goals(summary, n=num_goals, persona=persona, textgen_config=textgen_config)
+        goals = lida.goals(summary, n=num_goals, textgen_config=textgen_config)
         tab2.write(f"## Goals ({len(goals)})")
 
         default_goal = goals[0].question
@@ -296,7 +294,8 @@ if openai_key and selected_dataset and selected_method:
                 value=3)
 
             textgen_config = TextGenerationConfig(
-                n=num_visualizations, temperature=temperature,
+                n=num_visualizations, 
+                temperature=temperature,
                 model=selected_model,
                 use_cache=use_cache)
 
